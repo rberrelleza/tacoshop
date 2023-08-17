@@ -1,0 +1,19 @@
+build:
+  menu:
+    context: menu
+    image: ramiro/tacoshop-menu:latest
+  kitchen:
+    context: kitchen
+    image: ramiro/tacoshop-kitchen:latest
+  check:
+    context: check
+    image: ramiro/tacoshop-check:latest
+deploy:
+- name: deploy cloudinfra
+  command: |
+     helm upgrade --install localstack localstack-charts/localstack
+- name: deploy services
+  command: |
+    helm upgrade --install menu ./menu/chart
+    helm upgrade --install kitchen ./kitchen/chart
+    helm upgrade --install check ./check/chart

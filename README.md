@@ -1,6 +1,6 @@
 # Create a Development Environment with okteto, Kubernetes, and Cloud Services
 
-This is an example of how to configure and deploy a development environment that includes polyglot microservices, an AWS SQS queue, and an S3 bucket. This sample uses LocalStack to mock the AWS interface, to keep costs down.
+This is an example of how to configure and deploy a development environment that includes polyglot microservices, an AWS SQS queue, and an S3 bucket. This sample uses LocalStack to mock the AWS interface, to keep costs down and keep it simple.
 
 ## Architecture
 
@@ -11,6 +11,9 @@ This is an example of how to configure and deploy a development environment that
 ### Prequisites:
 1. [Okteto CLI 2.19](https://github.com/okteto/okteto) or newer
 1. A Kubernetes cluster 
+
+> If you don't have access to a Kubernetes cluster, you can also run this sample in the free tier https://cloud.okteto.com
+> Just run `okteto context use https://cloud.okteto.com`
 
 ```
 $ git clone https://github.com/rberrelleza/tacoshop

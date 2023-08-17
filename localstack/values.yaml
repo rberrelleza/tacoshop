@@ -1,5 +1,6 @@
 startServices: "s3,sqs"
 enableStartupScripts: true
 startupScriptContent: |
+  #!/bin/bash
   awslocal sqs create-queue --queue-name tacoshop
   awslocal s3api create-bucket --bucket tacoshop

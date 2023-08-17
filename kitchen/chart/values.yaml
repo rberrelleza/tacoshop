@@ -28,7 +28,7 @@ service:
   port: 8000
 
 ingress:
-  enabled: true
+  enabled: false
   className: ""
   hosts:
     - host: kitchen.oktaco.shop

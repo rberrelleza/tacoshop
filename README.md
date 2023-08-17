@@ -12,7 +12,7 @@ This is an example of how to configure and deploy a development environment that
 1. [Okteto CLI 2.19](https://github.com/okteto/okteto) or newer
 1. A Kubernetes cluster 
 
-> If you don't have access to a Kubernetes cluster, you can also run this sample in the free tier https://cloud.okteto.com
+> If you don't have access to a Kubernetes cluster, you can also run this sample in the [free tier of Okteto](https://cloud.okteto.com)
 > Just run `okteto context use https://cloud.okteto.com`
 
 ```

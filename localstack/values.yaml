@@ -1,4 +1,6 @@
 startServices: "s3,sqs"
+service:
+  type: ClusterIP
 enableStartupScripts: true
 startupScriptContent: |
   #!/bin/bash

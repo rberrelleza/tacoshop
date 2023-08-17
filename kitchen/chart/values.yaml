@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image: ramiro/tacoshop-kitchen:latest
-queue: 
-check:
+queue: tacoshop
+check: http://check:8000/checks
 credentials:
   secret:
     name: secret-credentials
@@ -31,7 +31,7 @@ ingress:
   enabled: true
   className: ""
   hosts:
-    - host: oktaco.shop
+    - host: kitchen.oktaco.shop
       paths:
         - path: /
           pathType: ImplementationSpecific

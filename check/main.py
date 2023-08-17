@@ -17,8 +17,9 @@ app = FastAPI()
 env = jinja2.Environment(loader=jinja2.PackageLoader("main"), autoescape=jinja2.select_autoescape())
 template = env.get_template("receipt.j2")
 
-s3 = boto3.client('s3')
 s3Bucket = os.getenv("BUCKET")
+endpoint_url=os.getenv("AWS_ENDPOINT")
+s3 = boto3.client('s3', endpoint_url=endpoint_url)
 checks = {}
 
 

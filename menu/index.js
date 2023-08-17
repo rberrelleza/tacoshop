@@ -1,7 +1,6 @@
 const express = require('express')
 const { SQSClient, SendMessageCommand } = require("@aws-sdk/client-sqs");
-const sqsClient = new SQSClient({region: process.env.REGION});
-const author = process.env.AUTHOR;
+const sqsClient = new SQSClient({region: process.env.AWS_REGION, endpoint: process.env.AWS_ENDPOINT});
 const queue = process.env.QUEUE;
 
 const app = express()

@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image: ramiro/tacoshop-check:latest
-bucket: 
+bucket: tacoshop
 credentials:
   secret:
     name: secret-credentials
@@ -30,7 +30,7 @@ ingress:
   enabled: false
   className: ""
   hosts:
-    - host: oktaco.shop
+    - host: check.oktaco.shop
       paths:
         - path: /
           pathType: ImplementationSpecific

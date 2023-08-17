@@ -115,7 +115,17 @@ func (p *PendingOrder) IsReady() bool {
 }
 
 func checkForMessages(ctx context.Context, messages chan PendingOrder) {
-	sess := session.Must(session.NewSessionWithOptions(session.Options{}))
+	cfg := aws.Config{}
+	cfg.CredentialsChainVerboseErrors = aws.Bool(true)
+	if os.Getenv("AWS_REGION") != "" {
+		cfg.Region = aws.String(os.Getenv("AWS_REGION"))
+	}
+
+	if os.Getenv("AWS_ENDPOINT") != "" {
+		cfg.Endpoint = aws.String(os.Getenv("AWS_ENDPOINT"))
+	}
+
+	sess := session.Must(session.NewSession(&cfg))
 	svc := sqs.New(sess)
 	urlResult, err := svc.GetQueueUrl(&sqs.GetQueueUrlInput{
 		QueueName: aws.String(os.Getenv("QUEUE")),

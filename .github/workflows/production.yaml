@@ -1,17 +1,15 @@
 
-name: Deploy a preview environment
+name: Deploy to production
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch
 
 env:
   IMAGE_TAG: ${{ github.sha }}
   REGISTRY: ghcr.io
   REPO_NAME: ${{ github.repository }}
 jobs:
-  build-and-create-environment:
+  build-and-push-to-prod:
     permissions:
       pull-requests: write
       contents: read
@@ -49,28 +47,11 @@ jobs:
         with:
           helm: latest
           kubectl: latest
-      - name: get PR number
-        id: findPr
-        uses: jwalton/gh-find-current-pr@v1
-        with:
-          state: all
       - name: set kubernetes context
         uses: azure/k8s-set-context@v3
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
           method: kubeconfig
-      - name: create preview environment
+      - name: deploy to production
         run: |
-          export NAMESPACE="preview-tacoshop-${{ steps.findPr.outputs.number }}"
-          export HOST_SUFFIX="-preview-${{ steps.findPr.outputs.number }}.oktaco.shop"
-          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "${NAMESPACE}" "$HOST_SUFFIX"
-      - name: Post links to the environment
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: |
-            Your preview environment is ready!
-            http://menu-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
-            http://kitchen-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
-            http://check-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
-          reactions: rocket
-          comment_tag: preview
+          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "production" ".oktaco.shop"

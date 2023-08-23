@@ -62,7 +62,8 @@ jobs:
       - name: create preview environment
         run: |
           export NAMESPACE="preview-tacoshop-${{ steps.findPr.outputs.number }}"
-          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "${NAMESPACE}"
+          export HOST_SUFFIX="preview-${{ steps.findPr.outputs.number }}.oktaco.shop"
+          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "${NAMESPACE}" "$HOST_SUFFIX"
       - name: Post links to the environment
         uses: thollander/actions-comment-pull-request@v2
         with:

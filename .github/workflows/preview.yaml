@@ -60,4 +60,4 @@ jobs:
       - name: create preview environment
         run: |
           namespace="preview-${{ env.REPO_NAME }}-${{ steps.findPr.outputs.number }}"
-          ./deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "$namespace"
+          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "$namespace"

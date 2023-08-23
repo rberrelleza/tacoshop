@@ -9,7 +9,7 @@ env:
   REGISTRY: ghcr.io
   REPO_NAME: ${{ github.repository }}
 jobs:
-  build-and-push-to-prod
+  build-and-push-to-prod:
     permissions:
       pull-requests: write
       contents: read

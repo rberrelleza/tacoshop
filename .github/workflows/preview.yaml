@@ -60,5 +60,5 @@ jobs:
           method: kubeconfig
       - name: create preview environment
         run: |
-          export NAMESPACE="preview-${{ env.REPO_NAME }}-${{ steps.findPr.outputs.number }}"
+          export NAMESPACE="preview-tacoshop-${{ steps.findPr.outputs.number }}"
           ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "${NAMESPACE}"

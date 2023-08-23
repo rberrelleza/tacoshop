@@ -1,0 +1,75 @@
+
+name: Deploy a preview environment
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  IMAGE_TAG: ${{ github.sha }}
+  REGISTRY: ghcr.io
+  REPO_NAME: ${{ github.repository }}
+jobs:
+  build-and-create-environment:
+    permissions:
+      pull-requests: write
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+      - name: Build and push Menu image
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: menu
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/menu:${{ env.IMAGE_TAG }}
+      - name: Build and push Kitchen image
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: kitchen
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/kitchen:${{ env.IMAGE_TAG }}
+      - name: Build and push Checkimage
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: check
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/check:${{ env.IMAGE_TAG }}
+      - name: install dependencies
+        uses: alexellis/arkade-get@master
+        with:
+          helm: latest
+          kubectl: latest
+      - name: get PR number
+        id: findPr
+        uses: jwalton/gh-find-current-pr@v1
+        with:
+          state: all
+      - name: set kubernetes context
+        uses: azure/k8s-set-context@v3
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          method: kubeconfig
+      - name: create preview environment
+        run: |
+          export NAMESPACE="preview-tacoshop-${{ steps.findPr.outputs.number }}"
+          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "${NAMESPACE}"
+      - name: Post links to the environment
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Your preview environment is ready!
+            http://menu-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
+            http://kitchen-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
+            http://check-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
+          reactions: rocket
+          comment_tag: preview

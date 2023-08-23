@@ -1,0 +1,37 @@
+
+name: Destroy a preview environment
+
+on:
+  pull_request:
+    types:
+    - closed
+
+jobs:
+  build-and-create-environment:
+    permissions:
+      pull-requests: write
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: install dependencies
+        uses: alexellis/arkade-get@master
+        with:
+          helm: latest
+          kubectl: latest
+      - name: get PR number
+        id: findPr
+        uses: jwalton/gh-find-current-pr@v1
+        with:
+          state: all
+      - name: set kubernetes context
+        uses: azure/k8s-set-context@v3
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          method: kubeconfig
+      - name: delete preview environment
+        run: |
+          export NAMESPACE="preview-tacoshop-${{ steps.findPr.outputs.number }}"
+          ./hack/destroy.sh "${NAMESPACE}"

@@ -1,4 +1,4 @@
-NAMESPACE=${3:-default}
+NAMESPACE=${1:-default}
 
 helm uninstall --namespace $NAMESPACE menu
 helm uninstall --namespace $NAMESPACE kitchen

@@ -11,6 +11,7 @@ env:
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
+
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
@@ -32,3 +33,15 @@ jobs:
           context: menu
           push: true
           tags:  ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/menu:${{ env.IMAGE_TAG }}
+      - name: Build and push Kitchen image
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: kitchen
+          push: true
+          tags:  ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/kitchen:${{ env.IMAGE_TAG }}
+      - name: Build and push Checkimage
+        uses: docker/build-push-action@v4.1.1
+        with:
+          context: check
+          push: true
+          tags:  ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/check:${{ env.IMAGE_TAG }}

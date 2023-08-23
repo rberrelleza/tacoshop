@@ -27,7 +27,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Menu image
-        uses: docker/build-push-action@v6.2.0
+        uses: docker/build-push-action@v6.2
         with:
           context: menu
           image: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/menu

@@ -72,3 +72,4 @@ jobs:
             http://kitchen-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
             http://check-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
           reactions: rocket
+          comment_tag: preview

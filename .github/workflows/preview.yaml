@@ -62,3 +62,12 @@ jobs:
         run: |
           export NAMESPACE="preview-tacoshop-${{ steps.findPr.outputs.number }}"
           ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "${NAMESPACE}"
+      - name: Post links to the environment
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Your preview environment is ready!
+            http://menu-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
+            http://kitchen-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
+            http://check-preview-${{ steps.findPr.outputs.number }}.oktaco.shop
+          reactions: rocket

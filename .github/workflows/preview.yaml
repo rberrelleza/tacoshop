@@ -49,6 +49,7 @@ jobs:
           helm: latest
           kubectl: latest
       - name: get PR number
+        id: findPr
         uses: jwalton/gh-find-current-pr@v1
         with:
           state: all
@@ -59,5 +60,5 @@ jobs:
           method: kubeconfig
       - name: create preview environment
         run: |
-          namespace="preview-${{ env.REPO_NAME }}-${{ steps.findPr.outputs.number }}"
-          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "$namespace"
+          export NAMESPACE="preview-${{ env.REPO_NAME }}-${{ steps.findPr.outputs.number }}"
+          ./hack/deploy.sh "${{ env.REGISTRY }}/${{ env.REPO_NAME }}" "${{ env.IMAGE_TAG }}" "${NAMESPACE}"

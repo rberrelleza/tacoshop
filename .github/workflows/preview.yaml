@@ -31,5 +31,4 @@ jobs:
         with:
           context: menu
           push: true
-          image: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/menu
-          tags: ${{ env.IMAGE_TAG }}
+          tags:  ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/menu:${{ env.IMAGE_TAG }}

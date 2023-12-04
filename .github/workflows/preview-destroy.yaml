@@ -7,7 +7,7 @@ on:
     - closed
 
 jobs:
-  build-and-create-environment:
+  destroy-preview-environment:
     permissions:
       pull-requests: write
       contents: read

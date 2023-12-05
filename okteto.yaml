@@ -26,6 +26,8 @@ dev:
     workdir: /usr/src/app
     sync:
     - menu:/usr/src/app
+    forward:
+    - 3000:3000
   kitchen:
     image: okteto/golang:1
     command: bash
